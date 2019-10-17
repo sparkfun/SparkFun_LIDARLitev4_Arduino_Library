@@ -16,3 +16,17 @@ SparkFun LIDAR Lite v4 Arduino Library
 </table>
 
 Arduino library for GARMIN LIDAR Lite v4: high-performance optical distance sensing.
+
+
+Repository Contents
+-------------------
+
+* **/examples** - Example sketches for the library (.ino). Run these from the Arduino IDE.
+* **/src** - Source files for the library (.cpp, .h).
+* **keywords.txt** - Keywords from this library that will be highlighted in the Arduino IDE. 
+* **library.properties** - General library properties for the Arduino package manager. 
+
+Documentation
+--------------
+
+* **[Installing an Arduino Library Guide](https://learn.sparkfun.com/tutorials/installing-an-arduino-library)** - Basic information on how to install an Arduino library.
