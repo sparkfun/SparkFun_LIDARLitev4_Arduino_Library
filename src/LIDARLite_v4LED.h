@@ -84,10 +84,10 @@ public:
   void takeRange();        //Initiate a distance measurement by writing to register 0x00
   void waitForBusy();      //Blocking function to wait until the LIDAR Lite's internal busy flag goes low
   uint8_t getBusyFlag();   //Read BUSY flag from device registers. Function will return 0x00 if not busy
-  uint16_t readDistance(); //Read and return the result of the most recent distance measurement
+  uint16_t readDistance(); //Read and return the result of the most recent distance measurement in centimeters
 
   //Get distance measurement function
-  uint8_t getDistance(uint16_t *distance); //Asks for, waits, and returns new measurement reading
+  uint16_t getDistance(uint16_t *distance); //Asks for, waits, and returns new measurement reading in centimeters
 
   //Gpio functions
   void takeRangeGpio(uint8_t triggerPin, uint8_t monitorPin); //Initiate a distance measurement by toggling the trigger pin

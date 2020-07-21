@@ -324,10 +324,10 @@ uint16_t LIDARLite_v4LED::readDistance()
     // Read two bytes from registers 0x10 and 0x11
     read(FULL_DELAY_LOW, dataBytes, 2);
 
-    return (distance);
+    return (distance); //This is the distance in centimeters
 } /* LIDARLite_v4LED::readDistance */
 
-uint8_t LIDARLite_v4LED::getDistance(uint16_t *distance)
+uint16_t LIDARLite_v4LED::getDistance(uint16_t *distance)
 {
     // 1. Trigger a range measurement.
     takeRange();
@@ -338,7 +338,7 @@ uint8_t LIDARLite_v4LED::getDistance(uint16_t *distance)
     // 3. Read new distance data from device registers
     *distance = readDistance();
 
-    return *distance;
+    return *distance; //This is the distance in centimeters
 }
 
 /*------------------------------------------------------------------------------

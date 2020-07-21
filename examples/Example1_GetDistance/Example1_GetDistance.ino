@@ -13,7 +13,7 @@
 
   Distributed as-is; no warranty is given.
 ******************************************************************************/
-#include <LIDARLite_v4LED.h>
+#include "LIDARLite_v4LED.h"
 
 LIDARLite_v4LED myLIDAR;
 
@@ -34,6 +34,7 @@ void loop() {
   uint16_t distance;
   float newDistance;
 
+  //getDistance() returns the distance reading in cm
   newDistance = myLIDAR.getDistance(&distance);
 
   //Print to Serial port
