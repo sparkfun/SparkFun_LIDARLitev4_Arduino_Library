@@ -15,7 +15,7 @@ SparkFun LIDAR Lite v4 Arduino Library
   </tr>
 </table>
 
-Arduino library for GARMIN LIDAR Lite v4: high-performance optical distance sensing.
+Arduino library for Garmin LIDAR Lite v4: high-performance optical distance sensing. This code is modified from the original Garmin library which can be found [here](https://github.com/garmin/LIDARLite_Arduino_Library).
 
 
 Repository Contents
