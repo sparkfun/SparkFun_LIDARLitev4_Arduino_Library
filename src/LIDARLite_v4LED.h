@@ -3,6 +3,10 @@
   LIDARLite_v4LED Arduino Library
   LIDARLite_v4LED.h
 
+  This library is modified by SparkFun but originally comes from Garmin. 
+  You can find the original library code here:
+  https://github.com/garmin/LIDARLite_Arduino_Library
+  
   This library provides quick access to all the basic functions of LIDAR-Lite
   via the Arduino interface. Additionally, it can provide a user of any
   platform with a template for their own application code.

@@ -3,6 +3,10 @@
   LIDARLite_v4LED Arduino Library
   LIDARLite_v4LED.cpp
 
+  This library is modified by SparkFun but originally comes from Garmin. 
+  You can find the original library code here:
+  https://github.com/garmin/LIDARLite_Arduino_Library
+
   This library provides quick access to the basic functions of LIDAR-Lite
   via the Arduino interface. Additionally, it can provide a user of any
   platform with a template for their own application code.
@@ -129,9 +133,6 @@ bool LIDARLite_v4LED::setI2Caddr(uint8_t newAddress, bool disableDefaultI2CAddre
         return false;
     }
 
-    //enable flash storage
-    enableFlash(true);
-
     if (newAddress == 0x62)
     {
         return useDefaultAddress();
@@ -142,61 +143,39 @@ bool LIDARLite_v4LED::setI2Caddr(uint8_t newAddress, bool disableDefaultI2CAddre
     for (int i = 0; i < 5; i++)
         dataBytes[i] = 0;
 
-    // Read 4-byte device serial number
-    read(UNIT_ID_0, dataBytes, 4);
+    // Enable flash storage
+    enableFlash(true);
+    delay(100);
 
-    //flip order of values
-    int start = 0;
-    int end = 3;
-    while (start < end)
-    {
-        int temp2 = dataBytes[start];
-        dataBytes[start] = dataBytes[end];
-        dataBytes[end] = temp2;
-        start++;
-        end--;
-    }
+    // Read 4-byte device serial number
+    read(0x16, dataBytes, 4);
 
     // Append the desired I2C address to the end of the serial number byte array
     dataBytes[4] = newAddress;
 
     // Write the serial number and new address in one 5-byte transaction
-    bool success = write(UNIT_ID_0, dataBytes, 5);
+    write(0x16, dataBytes, 5);
 
-    if (success == false)
-    {
-        return false;
-    }
+    // Wait for the I2C peripheral to be restarted with new device address
+    delay(100);
 
+    //Change _deviceAddress to reflect the changed address
     _deviceAddress = newAddress;
 
-    //Give LIDAR the time to record new address to eeprom
-    //Via logic analyzer, it takes approx 2-3 msec for LIDAR to respond
-    byte counter = 0;
-    while (1)
+    // If desired, disable default I2C device address (using the new I2C device address)
+    if (disableDefaultI2CAddress)
     {
-        delay(10);
+        useNewAddressOnly();
 
-        if (isConnected() == true)
-            break;
-        if (counter++ > 100)
-        {
-            //LIDAR never responded
-            return false;
-        }
+        // Wait for the I2C peripheral to be restarted with new device address
+        delay(100);
     }
 
-    if (disableDefaultI2CAddress == true)
-    {
-        bool success = useNewAddressOnly();
-        if (success == false)
-            return false;
-    }
-
-    //disable flash storage after changing address
+    // Disable flash storage
     enableFlash(false);
-    return true;
+    delay(100);
 
+    return true;
 } /* LIDARLite_v4LED::setI2Caddr */
 
 bool LIDARLite_v4LED::useDefaultAddress()
