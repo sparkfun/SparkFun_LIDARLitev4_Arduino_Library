@@ -17,7 +17,7 @@
 ******************************************************************************/
 #include <LIDARLite_v4LED.h>
 
-LIDARLite_v4LED myLIDAR;
+LIDARLite_v4LED myLIDAR; //Click here to get the library: http://librarymanager/All#SparkFun_LIDARLitev4 by SparkFun
 
 void setup() {
   Serial.begin(115200);

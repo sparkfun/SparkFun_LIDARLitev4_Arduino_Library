@@ -91,7 +91,7 @@ public:
   uint16_t readDistance(); //Read and return the result of the most recent distance measurement in centimeters
 
   //Get distance measurement function
-  uint16_t getDistance(uint16_t *distance); //Asks for, waits, and returns new measurement reading in centimeters
+  uint16_t getDistance(); //Asks for, waits, and returns new measurement reading in centimeters
 
   //Gpio functions
   void takeRangeGpio(uint8_t triggerPin, uint8_t monitorPin); //Initiate a distance measurement by toggling the trigger pin

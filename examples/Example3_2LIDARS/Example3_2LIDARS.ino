@@ -21,7 +21,7 @@
 //For this example to work, you must daisy chain together two Qwiic LIDAR sensors with different I2C addresses
 //To change the address of a Qwiic LIDAR sensor, please visit example 2
 
-#include <LIDARLite_v4LED.h>
+#include <LIDARLite_v4LED.h> //Click here to get the library: http://librarymanager/All#SparkFun_LIDARLitev4 by SparkFun
 
 //instantiate both LIDARs
 LIDARLite_v4LED myLIDAR1;
