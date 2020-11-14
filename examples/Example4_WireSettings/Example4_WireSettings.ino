@@ -16,14 +16,15 @@
   Distributed as-is; no warranty is given.
 ******************************************************************************/
 #include <LIDARLite_v4LED.h>
+#include <Wire.h>
 
 LIDARLite_v4LED myLIDAR; //Click here to get the library: http://librarymanager/All#SparkFun_LIDARLitev4 by SparkFun
 
 void setup() {
   Serial.begin(115200);
   Serial.println("Qwiic LIDAR examples");
-  Wire1.setClock(400000); //set I2C communication to 400kHz
   Wire1.begin();  //Compilation will fail here if your platform doesn't have multiple I2C ports
+  Wire1.setClock(400000); //set I2C communication to 400kHz
 
   //check if LIDAR will acknowledge over I2C
   if (myLIDAR.begin(0x6F, Wire1) == false) {
@@ -34,10 +35,9 @@ void setup() {
 }
 
 void loop() {
-  uint16_t distance;
   float newDistance;
 
-  newDistance = myLIDAR.getDistance(&distance);
+  newDistance = myLIDAR.getDistance();
 
   //Print to serial port
   Serial.print("New distance: ");

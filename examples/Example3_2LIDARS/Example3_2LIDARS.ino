@@ -47,14 +47,11 @@ void setup() {
 }
 
 void loop() {
-  uint16_t distance1;
   float newDistance1;
-
-  uint16_t distance2;
   float newDistance2;
 
-  newDistance1 = myLIDAR1.getDistance(&distance1);
-  newDistance2 = myLIDAR2.getDistance(&distance2);
+  newDistance1 = myLIDAR1.getDistance();
+  newDistance2 = myLIDAR2.getDistance();
 
   //Print to Serial port
   Serial.print("LIDAR 1 distance: ");

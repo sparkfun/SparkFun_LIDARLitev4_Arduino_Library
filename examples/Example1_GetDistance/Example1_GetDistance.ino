@@ -31,7 +31,6 @@ void setup() {
 }
 
 void loop() {
-  uint16_t distance;
   float newDistance;
 
   //getDistance() returns the distance reading in cm
