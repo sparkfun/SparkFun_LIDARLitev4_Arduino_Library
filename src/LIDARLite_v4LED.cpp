@@ -148,13 +148,13 @@ bool LIDARLite_v4LED::setI2Caddr(uint8_t newAddress, bool disableDefaultI2CAddre
     delay(100);
 
     // Read 4-byte device serial number
-    read(0x16, dataBytes, 4);
+    read(UNIT_ID_0, dataBytes, 4);
 
     // Append the desired I2C address to the end of the serial number byte array
     dataBytes[4] = newAddress;
 
     // Write the serial number and new address in one 5-byte transaction
-    write(0x16, dataBytes, 5);
+    write(UNIT_ID_0, dataBytes, 5);
 
     // Wait for the I2C peripheral to be restarted with new device address
     delay(100);
@@ -388,6 +388,93 @@ uint8_t LIDARLite_v4LED::getBusyFlagGpio(uint8_t monitorPin)
 
     return busyFlag;
 } /* LIDARLite_v4LED::getBusyFlagGpio */
+
+/*------------------------------------------------------------------------------
+  Get the temperature of the board
+  
+  Read the BOARD_TEMPERATURE register. This function returns the temperature in 
+  two's complement in Celcius.
+------------------------------------------------------------------------------*/
+uint8_t LIDARLite_v4LED::getBoardTemp()
+{
+    uint8_t temp = 0;
+    read(BOARD_TEMPERATURE, &temp, 1);
+    return temp;
+}
+
+/*------------------------------------------------------------------------------
+  Get the temperature of the SOC (nRF52840)
+
+  Read the SOC_TEMPERATURE register. This function returns the temperature in 
+  two's complement in Celcius.
+------------------------------------------------------------------------------*/
+uint8_t LIDARLite_v4LED::getSOCTemp()
+{
+    uint8_t temp = 0;
+    read(SOC_TEMPERATURE, &temp, 1);
+    return temp;
+}
+
+/*------------------------------------------------------------------------------
+  Set the power mode of the nRF52840 to be always on.
+
+  The coprocessor is not turned off, allowing for the fastest measurement possible.
+  This is the default setting.
+------------------------------------------------------------------------------*/
+bool LIDARLite_v4LED::setPowerModeAlwaysOn()
+{
+    uint8_t on = 0xFF;
+    return write(POWER_MODE, &on, 1);
+}
+
+/*------------------------------------------------------------------------------
+  Set the nRF52840 to operate in asynchronous mode.
+
+  The coprocessor is always off unless a distance measurement is needed or a 
+  register access is required. Disable high accuracy mode first.
+------------------------------------------------------------------------------*/
+bool LIDARLite_v4LED::setPowerModeAsync()
+{
+    uint8_t async = 0x00;
+    return write(POWER_MODE, &async, 1);
+}
+
+/*------------------------------------------------------------------------------
+  Enable and disable high accuracy mode
+
+  By default, the LIDAR operates in high accuracy mode, so use this function to 
+  disable and/or re-enable high accuracy mode
+  mode before setting the power mode to asynchronous.
+
+  Parameters
+  ------------------------------------------------------------------------------
+  enable: boolean when set to true will ENABLE high accuracy mode and when false
+  will DISABLE high accuracy mode.
+------------------------------------------------------------------------------*/
+bool LIDARLite_v4LED::enableHighAccuracyMode(bool enable)
+{
+    uint8_t writeByte;
+
+    if (enable){
+        writeByte = 0x14;
+    } else {
+        writeByte = 0x00;
+    }
+
+    return write(HIGH_ACCURACY_MODE, &writeByte, 1);
+}
+
+/*------------------------------------------------------------------------------
+  Call this function to put the nRF52840 SOC back to factory settings.
+
+  Resets the NVM/Flash storage information back to default settings and executes 
+  a SoftDevice reset.
+------------------------------------------------------------------------------*/
+bool LIDARLite_v4LED::factoryReset()
+{
+    uint8_t resetByte = 0x01;
+    return write(FACTORY_RESET, &resetByte, 1);
+}
 
 /*------------------------------------------------------------------------------
   Write

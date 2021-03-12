@@ -59,6 +59,7 @@ private:
     LIB_VERSION = 0x30,
     CORR_DATA = 0x52,
     CP_VER_LO = 0x72,
+    CP_VER_HI = 0x73, 
     BOARD_TEMPERATURE = 0xE0,
     HARDWARE_VERSION = 0xE1,
     POWER_MODE = 0xE2,
@@ -69,6 +70,7 @@ private:
     ENABLE_FLASH_STORAGE = 0xEA,
     HIGH_ACCURACY_MODE = 0xEB,
     SOC_TEMPERATURE = 0xEC,
+    ENABLE_ANT_RADIO = 0xF0,
   };
 
 public:
@@ -97,6 +99,15 @@ public:
   void takeRangeGpio(uint8_t triggerPin, uint8_t monitorPin); //Initiate a distance measurement by toggling the trigger pin
   void waitForBusyGpio(uint8_t monitorPin);                   //Blocking function to wait until the LIDAR Lite's internal busy flag goes low
   uint8_t getBusyFlagGpio(uint8_t monitorPin);                //Check BUSY status via Monitor pin. Function will return 0x00 if not busy
+
+  // Extra functions if the user needs them
+  // Only use these functions if you have read the datasheet an know what you're doing
+  uint8_t getBoardTemp(); // Reads the BOARD_TEMPERATURE register and returns the two's complement value in celcius
+  uint8_t getSOCTemp();   // Reads the SOC_TEMPERATURE register and returns the two's complement value in celcius
+  bool setPowerModeAlwaysOn();  // Writes 0xFF to POWER_MODE register. The coprocessor is never turned off, allowing for the fastest measurement possible. This is the default
+  bool setPowerModeAsync(); // Writes 0x00 to POWER_MODE register. The coprocessor is always off unless a distance measurement is requested or register access is required
+  bool enableHighAccuracyMode(bool enable); // By default, LIDAR operates in high accuracy mode. Disable high accuracy mode if you wish to operate in asynchronous mode.  
+  bool factoryReset();    // Resets the NVM/Flash storage information back to default settings and executes a SoftDevice reset
 
   //Internal I2C abstraction
   bool write(uint8_t regAddr, uint8_t *dataBytes, uint8_t numBytes); //Perform I2C write to the device. Can specify the number of bytes to be written
